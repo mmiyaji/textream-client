@@ -17,7 +17,25 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    [_screen setStyleMask:NSBorderlessWindowMask];
+    [_screen setOpaque:NO];
+    [_screen setBackgroundColor:[NSColor clearColor]];
+    [_screen makeKeyAndOrderFront:self];
+    [_screen setCollectionBehavior:  (NSWindowCollectionBehaviorCanJoinAllSpaces |
+                                      NSWindowCollectionBehaviorStationary |
+                                      NSWindowCollectionBehaviorIgnoresCycle)];
+    [_screen setLevel:NSFloatingWindowLevel];
+    
+}
+
+- (void)createText:(NSString*)str{
+    NSTextField *textField;
+    textField = [[NSTextField alloc] initWithFrame:NSMakeRect(10, 10, 200, 17)];
+    [textField setStringValue:str];
+    [textField setBezeled:NO];
+    [textField setDrawsBackground:NO];
+    [textField setEditable:NO];
+    [textField setSelectable:NO];
 }
 
 @end

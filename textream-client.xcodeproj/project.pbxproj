@@ -301,6 +301,7 @@
 				B17716DF17959FB600176B57 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
