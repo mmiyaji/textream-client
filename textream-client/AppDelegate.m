@@ -25,9 +25,37 @@
                                       NSWindowCollectionBehaviorStationary |
                                       NSWindowCollectionBehaviorIgnoresCycle)];
     [_screen setLevel:NSFloatingWindowLevel];
+    [self showStatusBar];
     for (int i=0; i<10; i++) {
         [self createText:@"テキストなんですよ":i];
     }
+}
+-(void)showStatusBar{
+    _status_bar = [NSStatusBar systemStatusBar];
+    [_status_bar retain];
+    _status_item = [_status_bar statusItemWithLength:NSVariableStatusItemLength];
+    [_status_item retain];
+    [_status_item setTitle:@"textream"];
+//    [_status_item setImage:[NSImage imageNamed:@"cut"]];
+//    [_status_item setAlternateImage:[NSImage imageNamed:@"cut2"]];
+    [_status_item setHighlightMode:YES];
+    [_status_item setMenu:_menu];
+}
+-(void)removeStatusBar{
+    if(_status_bar){
+        [_status_bar removeStatusItem:_status_item];
+        [_status_bar release];
+        [_status_item setMenu:Nil];
+        [_status_item release];
+    }
+}
+-(IBAction)openAboutPanel:(id)sender{
+    [NSApp orderFrontStandardAboutPanel:self];
+    [NSApp activateIgnoringOtherApps:YES];
+}
+-(IBAction)openPereferecesWindow:(id)sender{
+//    [_preferences_window makeKeyAndOrderFront:nil];
+    [NSApp activateIgnoringOtherApps:YES];
 }
 
 - (void)createText:(NSString*)str :(NSInteger)i{

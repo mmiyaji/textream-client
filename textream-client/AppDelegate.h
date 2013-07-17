@@ -9,9 +9,14 @@
 #import <Cocoa/Cocoa.h>
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>{
-    IBOutlet NSWindow*  _screen;
-    IBOutlet NSView*    _screen_view;
+    IBOutlet NSWindow*  _screen;        // 透過スクリーン
+    IBOutlet NSView*    _screen_view;   // 透過スクリーン上のビュー テキストはここに追加します
+    IBOutlet NSMenu*    _menu;              // menu bar
+    NSStatusBar*        _status_bar;     // 上のメニューバーに表示する。常駐型なのでアプリケーション終了はここらか
+    NSStatusItem*       _status_item;       // menu bar item
 }
+-(IBAction)openAboutPanel:      (id)sender;
+-(IBAction)openPereferecesWindow:(id)sender;
 
 @property (assign) IBOutlet NSWindow *window;
 
