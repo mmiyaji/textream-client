@@ -7,8 +7,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <SocketRocket/SRWebSocket.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>{
+@interface AppDelegate : NSObject <SRWebSocketDelegate>{
     IBOutlet NSWindow*  _screen;        // 透過スクリーン
     IBOutlet NSView*    _screen_view;   // 透過スクリーン上のビュー テキストはここに追加します
     IBOutlet NSMenu*    _menu;              // menu bar

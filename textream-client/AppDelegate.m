@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 
 @implementation AppDelegate
-
+int count;
 - (void)dealloc
 {
     [super dealloc];
@@ -17,6 +17,9 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    count = 1;
+    NSRect  screenFrame = [[NSScreen mainScreen] frame];
+    [_screen setFrame:screenFrame display:YES];
     [_screen setStyleMask:NSBorderlessWindowMask];
     [_screen setOpaque:NO];
     [_screen setBackgroundColor:[NSColor clearColor]];
@@ -26,9 +29,13 @@
                                       NSWindowCollectionBehaviorIgnoresCycle)];
     [_screen setLevel:NSFloatingWindowLevel];
     [self showStatusBar];
-    for (int i=0; i<10; i++) {
-        [self createText:@"テキストなんですよ":i];
-    }
+    SRWebSocket *web_socket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"ws://chat.ruhenheim.org:8080/"]]];
+    [web_socket setDelegate:self];
+    [web_socket open];
+}
+- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message{
+    NSLog(@"%@", [message description]);
+    [self createText:[message description]:count++];
 }
 -(void)showStatusBar{
     _status_bar = [NSStatusBar systemStatusBar];
