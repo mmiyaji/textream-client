@@ -13,6 +13,7 @@
     IBOutlet NSWindow*  _screen;        // 透過スクリーン
     IBOutlet NSView*    _screen_view;   // 透過スクリーン上のビュー テキストはここに追加します
     IBOutlet NSMenu*    _menu;              // menu bar
+    IBOutlet NSTextField*    _url_field;
     NSStatusBar*        _status_bar;     // 上のメニューバーに表示する。常駐型なのでアプリケーション終了はここらか
     NSStatusItem*       _status_item;       // menu bar item
 }

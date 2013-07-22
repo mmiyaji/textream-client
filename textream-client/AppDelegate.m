@@ -29,9 +29,13 @@ int count;
                                       NSWindowCollectionBehaviorIgnoresCycle)];
     [_screen setLevel:NSFloatingWindowLevel];
     [self showStatusBar];
-    SRWebSocket *web_socket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"ws://chat.ruhenheim.org:8080/"]]];
+    SRWebSocket *web_socket = [[SRWebSocket alloc] initWithURLRequest:
+                               [NSURLRequest requestWithURL:[NSURL URLWithString:[_url_field stringValue]]]];
     [web_socket setDelegate:self];
     [web_socket open];
+}
+- (void)webSocketDidOpen:(SRWebSocket *)webSocket{
+    [webSocket send:@"クライアントが接続されました"];
 }
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message{
     NSLog(@"%@", [message description]);
@@ -64,15 +68,23 @@ int count;
 //    [_preferences_window makeKeyAndOrderFront:nil];
     [NSApp activateIgnoringOtherApps:YES];
 }
-
+int TEXT_HEIGHT = 33;
 - (void)createText:(NSString*)str :(NSInteger)i{
     NSTextField *textField;
-    textField = [[NSTextField alloc] initWithFrame:NSMakeRect(10, 15*i, 200, 17)];
+    textField = [[NSTextField alloc] initWithFrame:NSMakeRect(10, TEXT_HEIGHT*i, 600, TEXT_HEIGHT)];
     [textField setStringValue:str];
     [textField setBezeled:NO];
     [textField setDrawsBackground:NO];
     [textField setEditable:NO];
     [textField setSelectable:NO];
+    [[textField cell] setBackgroundStyle:NSBackgroundStyleRaised];
+    [textField setFont:[NSFont systemFontOfSize:26.0]];
+    [textField setTextColor:[NSColor blackColor]];
+    NSShadow* shadow = [[NSShadow alloc] init];
+    shadow.shadowBlurRadius = 2; //set how many pixels the shadow has
+    shadow.shadowOffset = NSMakeSize(2, -2); //the distance from the text the shadow is dropped
+    shadow.shadowColor = [NSColor blackColor];
+    [textField setShadow:shadow];
     [_screen_view addSubview:textField];
 }
 
