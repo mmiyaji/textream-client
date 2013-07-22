@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "StreamText.h"
 
 @implementation AppDelegate
 int count;
@@ -41,6 +42,7 @@ int count;
     NSLog(@"%@", [message description]);
     [self createText:[message description]:count++];
 }
+
 -(void)showStatusBar{
     _status_bar = [NSStatusBar systemStatusBar];
     [_status_bar retain];
@@ -70,22 +72,10 @@ int count;
 }
 int TEXT_HEIGHT = 33;
 - (void)createText:(NSString*)str :(NSInteger)i{
-    NSTextField *textField;
-    textField = [[NSTextField alloc] initWithFrame:NSMakeRect(10, TEXT_HEIGHT*i, 600, TEXT_HEIGHT)];
-    [textField setStringValue:str];
-    [textField setBezeled:NO];
-    [textField setDrawsBackground:NO];
-    [textField setEditable:NO];
-    [textField setSelectable:NO];
-    [[textField cell] setBackgroundStyle:NSBackgroundStyleRaised];
-    [textField setFont:[NSFont systemFontOfSize:26.0]];
-    [textField setTextColor:[NSColor blackColor]];
-    NSShadow* shadow = [[NSShadow alloc] init];
-    shadow.shadowBlurRadius = 2; //set how many pixels the shadow has
-    shadow.shadowOffset = NSMakeSize(2, -2); //the distance from the text the shadow is dropped
-    shadow.shadowColor = [NSColor blackColor];
-    [textField setShadow:shadow];
+    StreamText *textField;
+    textField = [[StreamText alloc] initWithFrame:NSMakeRect([[NSScreen mainScreen] frame].size.width, TEXT_HEIGHT*i, 600, TEXT_HEIGHT)];
     [_screen_view addSubview:textField];
+    [textField showText:str];
 }
 
 @end

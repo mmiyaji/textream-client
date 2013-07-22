@@ -15,6 +15,7 @@
 		B17716DA17959FB600176B57 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B17716D817959FB600176B57 /* MainMenu.xib */; };
 		B18EC5161798434100A030F9 /* SocketRocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B18EC511179842FE00A030F9 /* SocketRocket.framework */; };
 		B18EC5181798435200A030F9 /* SocketRocket.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B18EC511179842FE00A030F9 /* SocketRocket.framework */; };
+		B1A3EC3A179DF4760076624A /* StreamText.m in Sources */ = {isa = PBXBuildFile; fileRef = B1A3EC39179DF4760076624A /* StreamText.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,8 @@
 		B17716D617959FB500176B57 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		B17716D917959FB600176B57 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		B18EC507179842FD00A030F9 /* SocketRocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SocketRocket.xcodeproj; path = SocketRocket/SocketRocket.xcodeproj; sourceTree = "<group>"; };
+		B1A3EC38179DF4760076624A /* StreamText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamText.h; sourceTree = "<group>"; };
+		B1A3EC39179DF4760076624A /* StreamText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StreamText.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +143,8 @@
 			children = (
 				B17716D517959FB500176B57 /* AppDelegate.h */,
 				B17716D617959FB500176B57 /* AppDelegate.m */,
+				B1A3EC38179DF4760076624A /* StreamText.h */,
+				B1A3EC39179DF4760076624A /* StreamText.m */,
 				B17716D817959FB600176B57 /* MainMenu.xib */,
 				B17716CA17959FB500176B57 /* Supporting Files */,
 			);
@@ -274,6 +279,7 @@
 			files = (
 				B17716D017959FB500176B57 /* main.m in Sources */,
 				B17716D717959FB500176B57 /* AppDelegate.m in Sources */,
+				B1A3EC3A179DF4760076624A /* StreamText.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
