@@ -14,7 +14,7 @@ Install
 @Xcode
 
 - 左サイドバーの SocketRocket.xcodeproj を選択
-- PROJECT -> Build Settiongs -> Base SDK に OSX10.7 or 10.8(自分のOSバージョン)
+- PROJECT -> Build Settings -> Base SDK に OSX10.7 or 10.8(自分のOSバージョン)
 - Archtectures に 64bit
 - TARGET -> SocketRocketOSX も同様にBaseSDK 10.7，64bit
 ![textream01](http://m-server.appspot.com/download/20130722230715.png?fid=aghtLXNlcnZlcnIQCxIIUG9zdERhdGEY4eslDA)
