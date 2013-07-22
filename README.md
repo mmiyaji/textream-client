@@ -5,11 +5,11 @@ textream-client
 Install
 -------
 
-$ git clone https://github.com/mmiyaji/textream-client.git
-$ cd textream-client
-$ git submodule init
-$ git submodule update
-$ open textream-client.xcodeproj
+    $ git clone https://github.com/mmiyaji/textream-client.git
+    $ cd textream-client
+    $ git submodule init
+    $ git submodule update
+    $ open textream-client.xcodeproj
 
 @Xcode
 
