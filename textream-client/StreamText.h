@@ -9,8 +9,9 @@
 #import <Cocoa/Cocoa.h>
 
 @interface StreamText : NSTextField{
-    NSMutableDictionary* _string_attributes;
+    NSDictionary* _string_attributes;
+    NSSize textSize;
+    NSTimer*    _timer;
 }
-
 -(void)showText:(NSString*)str;
 @end

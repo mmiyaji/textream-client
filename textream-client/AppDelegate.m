@@ -73,7 +73,7 @@ int count;
 int TEXT_HEIGHT = 33;
 - (void)createText:(NSString*)str :(NSInteger)i{
     StreamText *textField;
-    textField = [[StreamText alloc] initWithFrame:NSMakeRect([[NSScreen mainScreen] frame].size.width, TEXT_HEIGHT*i, 600, TEXT_HEIGHT)];
+    textField = [[StreamText alloc] initWithFrame:NSMakeRect([[NSScreen mainScreen] frame].size.width, TEXT_HEIGHT*i, 10, TEXT_HEIGHT)];
     [_screen_view addSubview:textField];
     [textField showText:str];
 }

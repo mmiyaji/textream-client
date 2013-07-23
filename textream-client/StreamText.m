@@ -9,7 +9,10 @@
 #import "StreamText.h"
 
 @implementation StreamText
-
+- (void)dealloc
+{
+    [super dealloc];
+}
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
@@ -34,20 +37,24 @@ int TEXT_HEIGHTS = 33;
 - (void)showText:(NSString*)str
 {
     [self setStringValue:str];
-    _string_attributes = [[NSMutableDictionary dictionary] retain];
-    [_string_attributes setObject:[NSColor whiteColor]
-                           forKey:NSForegroundColorAttributeName];
-    [_string_attributes setObject:[NSFont boldSystemFontOfSize:26.0]
-                           forKey: NSFontAttributeName];
+    _string_attributes = [[self attributedStringValue] attributesAtIndex:0 effectiveRange:nil];
     NSSize size = [str sizeWithAttributes:_string_attributes];
-    
+    [self setFrameSize:NSMakeSize(size.width + 5, size.height)];
+    NSLog(@"%f", size.width);
     NSPoint startAt = [self frame].origin;
-    NSPoint endAt = NSMakePoint(-size.width, startAt.y);
+    NSPoint endAt = NSMakePoint(-size.width + 5, startAt.y);
     CGFloat duration = 5;
     [NSAnimationContext beginGrouping];
     [[NSAnimationContext currentContext] setDuration:duration];
+    [[NSAnimationContext currentContext] setCompletionHandler:^{
+        NSLog(@"****");
+        [self textClose];
+    }];
     [[self animator] setFrameOrigin:endAt];
-    
     [NSAnimationContext endGrouping];
+}
+- (void)textClose{
+    [self removeFromSuperview];
+    [self release];
 }
 @end
