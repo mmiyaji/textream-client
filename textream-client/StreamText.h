@@ -9,11 +9,11 @@
 #import <Cocoa/Cocoa.h>
 
 @interface StreamText : NSTextField{
-    NSDictionary* _string_attributes;
-    NSSize textSize;
-    NSTimer*    _timer;
-    CGFloat _duration;
+//    テキストデコレーション用
+    NSDictionary*   _string_attributes;
+    NSSize          textSize;
+    CGFloat         _duration;
 }
-- (void)setDuration:(CGFloat)d;
+-(void)setDuration:(CGFloat)d;
 -(void)showText:(NSString*)str;
 @end

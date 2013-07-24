@@ -14,13 +14,14 @@
 int count;
 - (void)dealloc
 {
+    [_web_socket release];
     [super dealloc];
 }
 
 //  アプリケーション起動時
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    count = 1;
+    count = 0;
     visibleScreenRect = [[NSScreen mainScreen] visibleFrame];
     _text_array = [NSMutableArray array];
     NSRect  screenFrame = [[NSScreen mainScreen] frame];
@@ -49,6 +50,9 @@ int count;
     [self setLog:[message description]];
 }
 - (void)reloadServer:(id)sender{
+    NSLog(@"reload server");
+    [_web_socket close];
+    [_web_socket dealloc];
     [self connectServer];
 }
 - (void)connectServer{
@@ -63,8 +67,6 @@ int count;
     _status_item = [_status_bar statusItemWithLength:NSVariableStatusItemLength];
     [_status_item retain];
     [_status_item setTitle:@"textream"];
-//    [_status_item setImage:[NSImage imageNamed:@"cut"]];
-//    [_status_item setAlternateImage:[NSImage imageNamed:@"cut2"]];
     [_status_item setHighlightMode:YES];
     [_status_item setMenu:_menu];
 }
@@ -84,23 +86,34 @@ int count;
     [_pref_window makeKeyAndOrderFront:nil];
     [NSApp activateIgnoringOtherApps:YES];
 }
+// 一時的にスクリーンを隠す
 -(IBAction)hideScreen:(id)sender{
     [_screen setIsVisible:false];
 }
 -(IBAction)showScreen:(id)sender{
     [_screen setIsVisible:true];
 }
-int TEXT_HEIGHT = 33;
+// 最前面化した透明ウィンドウにテキストを流し込む
 - (void)createText:(NSString*)str{
-    double origin_y = (visibleScreenRect.size.height - TEXT_HEIGHT) * rand() / RAND_MAX;
+    // 適当な高さを設定
+    double origin_y = (visibleScreenRect.size.height - 20) * rand() / RAND_MAX;
     StreamText *textField;
-    textField = [[StreamText alloc] initWithFrame:NSMakeRect(visibleScreenRect.size.width, origin_y, 10, TEXT_HEIGHT)];
+    // 適当な大きさで初期化
+    textField = [[[StreamText alloc] autorelease]
+                 initWithFrame:NSMakeRect(visibleScreenRect.size.width, origin_y, 10, 20)];
     [_screen_view addSubview:textField];
-    NSLog(@"%@", [_duration_field stringValue]);
+    // アニメーション速度を設定
     [textField setDuration:[_duration_field floatValue]];
+    // アニメーションスタート
     [textField showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
 }
 -(void)setLog:(NSString*)str{
-    [_log_field setStringValue:[NSString stringWithFormat:@"%@\n %@", str, [_log_field stringValue]]];
+    NSString* date_converted;
+    NSDate* date_source = [NSDate date];
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM/dd HH:mm:ss"];
+    date_converted = [formatter stringFromDate:date_source];
+    [formatter release];
+    [_log_field setStringValue:[NSString stringWithFormat:@"%d. %@: %@\n %@", count, date_converted, str, [_log_field stringValue]]];
 }
 @end
