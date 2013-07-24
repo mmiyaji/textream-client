@@ -17,37 +17,38 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _duration = 5;
         [self setBezeled:NO];
         [self setDrawsBackground:NO];
         [self setEditable:NO];
         [self setSelectable:NO];
-        [[self cell] setBackgroundStyle:NSBackgroundStyleRaised];
-        [self setFont:[NSFont systemFontOfSize:26.0]];
+        [self setFont:[NSFont boldSystemFontOfSize:46.0]];
         [self setTextColor:[NSColor blackColor]];
         NSShadow* shadow = [[NSShadow alloc] init];
         shadow.shadowBlurRadius = 2; //set how many pixels the shadow has
         shadow.shadowOffset = NSMakeSize(2, -2); //the distance from the text the shadow is dropped
         shadow.shadowColor = [NSColor blackColor];
+        [[self cell] setBackgroundStyle:NSBackgroundStyleRaised];
         [self setShadow:shadow];
     }
     
     return self;
 }
-int TEXT_HEIGHTS = 33;
+- (void)setDuration:(CGFloat)d
+{
+    _duration = d;
+}
 - (void)showText:(NSString*)str
 {
     [self setStringValue:str];
     _string_attributes = [[self attributedStringValue] attributesAtIndex:0 effectiveRange:nil];
     NSSize size = [str sizeWithAttributes:_string_attributes];
     [self setFrameSize:NSMakeSize(size.width + 5, size.height)];
-    NSLog(@"%f", size.width);
     NSPoint startAt = [self frame].origin;
     NSPoint endAt = NSMakePoint(-size.width + 5, startAt.y);
-    CGFloat duration = 5;
     [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:duration];
+    [[NSAnimationContext currentContext] setDuration:_duration];
     [[NSAnimationContext currentContext] setCompletionHandler:^{
-        NSLog(@"****");
         [self textClose];
     }];
     [[self animator] setFrameOrigin:endAt];

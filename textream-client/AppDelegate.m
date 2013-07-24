@@ -10,15 +10,19 @@
 #import "StreamText.h"
 
 @implementation AppDelegate
+@synthesize _pref_window;
 int count;
 - (void)dealloc
 {
     [super dealloc];
 }
 
+//  アプリケーション起動時
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     count = 1;
+    visibleScreenRect = [[NSScreen mainScreen] visibleFrame];
+    _text_array = [NSMutableArray array];
     NSRect  screenFrame = [[NSScreen mainScreen] frame];
     [_screen setFrame:screenFrame display:YES];
     [_screen setStyleMask:NSBorderlessWindowMask];
@@ -30,19 +34,29 @@ int count;
                                       NSWindowCollectionBehaviorIgnoresCycle)];
     [_screen setLevel:NSFloatingWindowLevel];
     [self showStatusBar];
-    SRWebSocket *web_socket = [[SRWebSocket alloc] initWithURLRequest:
-                               [NSURLRequest requestWithURL:[NSURL URLWithString:[_url_field stringValue]]]];
-    [web_socket setDelegate:self];
-    [web_socket open];
+    [self connectServer];
 }
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket{
     [webSocket send:@"クライアントが接続されました"];
 }
-- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message{
-    NSLog(@"%@", [message description]);
-    [self createText:[message description]:count++];
+- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error{
+    NSLog(@"fail");
 }
-
+- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message{
+    count++;
+    NSLog(@"%@", [message description]);
+    [self createText:[message description]];
+    [self setLog:[message description]];
+}
+- (void)reloadServer:(id)sender{
+    [self connectServer];
+}
+- (void)connectServer{
+    _web_socket = [[SRWebSocket alloc] initWithURLRequest:
+                   [NSURLRequest requestWithURL:[NSURL URLWithString:[_url_field stringValue]]]];
+    [_web_socket setDelegate:self];
+    [_web_socket open];
+}
 -(void)showStatusBar{
     _status_bar = [NSStatusBar systemStatusBar];
     [_status_bar retain];
@@ -67,15 +81,26 @@ int count;
     [NSApp activateIgnoringOtherApps:YES];
 }
 -(IBAction)openPereferecesWindow:(id)sender{
-//    [_preferences_window makeKeyAndOrderFront:nil];
+    [_pref_window makeKeyAndOrderFront:nil];
     [NSApp activateIgnoringOtherApps:YES];
 }
-int TEXT_HEIGHT = 33;
-- (void)createText:(NSString*)str :(NSInteger)i{
-    StreamText *textField;
-    textField = [[StreamText alloc] initWithFrame:NSMakeRect([[NSScreen mainScreen] frame].size.width, TEXT_HEIGHT*i, 10, TEXT_HEIGHT)];
-    [_screen_view addSubview:textField];
-    [textField showText:str];
+-(IBAction)hideScreen:(id)sender{
+    [_screen setIsVisible:false];
 }
-
+-(IBAction)showScreen:(id)sender{
+    [_screen setIsVisible:true];
+}
+int TEXT_HEIGHT = 33;
+- (void)createText:(NSString*)str{
+    double origin_y = (visibleScreenRect.size.height - TEXT_HEIGHT) * rand() / RAND_MAX;
+    StreamText *textField;
+    textField = [[StreamText alloc] initWithFrame:NSMakeRect(visibleScreenRect.size.width, origin_y, 10, TEXT_HEIGHT)];
+    [_screen_view addSubview:textField];
+    NSLog(@"%@", [_duration_field stringValue]);
+    [textField setDuration:[_duration_field floatValue]];
+    [textField showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
+}
+-(void)setLog:(NSString*)str{
+    [_log_field setStringValue:[NSString stringWithFormat:@"%@\n %@", str, [_log_field stringValue]]];
+}
 @end

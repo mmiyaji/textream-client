@@ -12,6 +12,8 @@
     NSDictionary* _string_attributes;
     NSSize textSize;
     NSTimer*    _timer;
+    CGFloat _duration;
 }
+- (void)setDuration:(CGFloat)d;
 -(void)showText:(NSString*)str;
 @end
