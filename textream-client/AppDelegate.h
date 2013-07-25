@@ -27,7 +27,15 @@
 -(IBAction)reloadServer:        (id)sender;
 -(IBAction)hideScreen:          (id)sender;
 -(IBAction)showScreen:          (id)sender;
+-(IBAction)savePref:            (id)sender;
 
 @property (assign) IBOutlet NSWindow *_pref_window;
 
+@end
+
+@interface NSUserDefaults (Preferences)
+- (void)setBoolIfNeeded:    (BOOL)value     forKey:(NSString*)key;
+- (void)setFloatIfNeeded:   (float)value    forKey:(NSString*)key;
+- (void)setIntegerIfNeeded: (int)value      forKey:(NSString*)key;
+- (void)setObjectIfNeeded:  (id)value       forKey:(NSString*)key;
 @end

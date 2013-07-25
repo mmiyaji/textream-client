@@ -8,6 +8,20 @@
 
 #import "AppDelegate.h"
 #import "StreamText.h"
+// ユーザ変数として保存
+@implementation NSUserDefaults (Preferences)
+-(void)setBoolIfNeeded:(BOOL)value forKey:(NSString*)key
+{ if(![self objectForKey:key]){ [self setBool:value forKey:key]; } }
+
+-(void)setFloatIfNeeded:(float)value forKey:(NSString*)key
+{ if(![self objectForKey:key]){ [self setFloat:value forKey:key]; } }
+
+-(void)setIntegerIfNeeded:(int)value forKey:(NSString*)key
+{ if(![self objectForKey:key]){ [self setInteger:value forKey:key]; } }
+
+-(void)setObjectIfNeeded:(id)value forKey:(NSString*)key
+{ if(![self objectForKey:key]){ [self setObject:value forKey:key]; } }
+@end
 
 @implementation AppDelegate
 @synthesize _pref_window;
@@ -17,10 +31,16 @@ int count;
     [_web_socket release];
     [super dealloc];
 }
+// ユーザ変数の初期値設定。値に何も設定されていない場合のみ反映。
+-(void)initUserDefaults{
+    id defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObjectIfNeeded:@"ws://localhost:8080"  forKey:@"server_url"];
+}
 
 //  アプリケーション起動時
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    [self initUserDefaults];
     count = 0;
     visibleScreenRect = [[NSScreen mainScreen] visibleFrame];
     _text_array = [NSMutableArray array];
@@ -35,7 +55,12 @@ int count;
                                       NSWindowCollectionBehaviorIgnoresCycle)];
     [_screen setLevel:NSFloatingWindowLevel];
     [self showStatusBar];
-    [self connectServer];
+    @try {
+        [self connectServer];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"error");
+    }
 }
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket{
     [webSocket send:@"クライアントが接続されました"];
@@ -92,6 +117,10 @@ int count;
 }
 -(IBAction)showScreen:(id)sender{
     [_screen setIsVisible:true];
+}
+-(IBAction)savePref:(id)sender{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults synchronize];
 }
 // 最前面化した透明ウィンドウにテキストを流し込む
 - (void)createText:(NSString*)str{
