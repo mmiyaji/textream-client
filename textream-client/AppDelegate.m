@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "StreamText.h"
-// ユーザ変数として保存
+// ユーザ変数として保存するメソッド。型によって使い分け
 @implementation NSUserDefaults (Preferences)
 -(void)setBoolIfNeeded:(BOOL)value forKey:(NSString*)key
 { if(![self objectForKey:key]){ [self setBool:value forKey:key]; } }
@@ -40,11 +40,15 @@ int count;
 //  アプリケーション起動時
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    // ユーザ変数初期化
     [self initUserDefaults];
     count = 0;
-    visibleScreenRect = [[NSScreen mainScreen] visibleFrame];
+    // メニューバーを除いた表示領域の大きさ取得
+    _visible_screen_rect = [[NSScreen mainScreen] visibleFrame];
     _text_array = [NSMutableArray array];
-    NSRect  screenFrame = [[NSScreen mainScreen] frame];
+    // 表示領域全体の大きさを取得
+    NSRect screenFrame = [[NSScreen mainScreen] frame];
+    // 透明ウィンドウ作成
     [_screen setFrame:screenFrame display:YES];
     [_screen setStyleMask:NSBorderlessWindowMask];
     [_screen setOpaque:NO];
@@ -54,7 +58,9 @@ int count;
                                       NSWindowCollectionBehaviorStationary |
                                       NSWindowCollectionBehaviorIgnoresCycle)];
     [_screen setLevel:NSFloatingWindowLevel];
+    // メニューバーセット
     [self showStatusBar];
+    // WebsocketServerに接続
     @try {
         [self connectServer];
     }
@@ -74,6 +80,7 @@ int count;
     [self createText:[message description]];
     [self setLog:[message description]];
 }
+//再接続
 - (void)reloadServer:(id)sender{
     NSLog(@"reload server");
     [_web_socket close];
@@ -103,10 +110,12 @@ int count;
         [_status_item release];
     }
 }
+//アプリケーション情報パネル表示
 -(IBAction)openAboutPanel:(id)sender{
     [NSApp orderFrontStandardAboutPanel:self];
     [NSApp activateIgnoringOtherApps:YES];
 }
+//環境設定パネル表示
 -(IBAction)openPereferecesWindow:(id)sender{
     [_pref_window makeKeyAndOrderFront:nil];
     [NSApp activateIgnoringOtherApps:YES];
@@ -122,20 +131,25 @@ int count;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults synchronize];
 }
+-(IBAction)sendText:(id)sender{
+    [_web_socket send:[_send_field stringValue]];
+    [_send_field setStringValue:@""];
+}
 // 最前面化した透明ウィンドウにテキストを流し込む
 - (void)createText:(NSString*)str{
     // 適当な高さを設定
-    double origin_y = (visibleScreenRect.size.height - 20) * rand() / RAND_MAX;
+    double origin_y = (_visible_screen_rect.size.height - 20) * rand() / RAND_MAX;
     StreamText *textField;
     // 適当な大きさで初期化
     textField = [[[StreamText alloc] autorelease]
-                 initWithFrame:NSMakeRect(visibleScreenRect.size.width, origin_y, 10, 20)];
+                 initWithFrame:NSMakeRect(_visible_screen_rect.size.width, origin_y, 10, 20)];
     [_screen_view addSubview:textField];
     // アニメーション速度を設定
     [textField setDuration:[_duration_field floatValue]];
     // アニメーションスタート
     [textField showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
 }
+//ログ表示領域に書き出し
 -(void)setLog:(NSString*)str{
     NSString* date_converted;
     NSDate* date_source = [NSDate date];
