@@ -28,9 +28,11 @@
         shadow.shadowBlurRadius = 3;
         shadow.shadowOffset = NSMakeSize(2, -2);
         shadow.shadowColor = [NSColor blackColor];
+        [[self layer] setShadowColor:CGColorCreateGenericRGB(0, 0, 0, 0.4)];
         [[self cell] setBackgroundStyle:NSBackgroundStyleRaised];
         [[self cell] setBackgroundColor:[NSColor blackColor]];
         [self setShadow:shadow]; // 反映されない うーむ
+        [shadow set];
     }
     return self;
 }

@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "StreamText.h"
+#import "StreamView.h"
 // ユーザ変数として保存するメソッド。型によって使い分け
 @implementation NSUserDefaults (Preferences)
 -(void)setBoolIfNeeded:(BOOL)value forKey:(NSString*)key
@@ -43,13 +44,14 @@ int count;
     // ユーザ変数初期化
     [self initUserDefaults];
     count = 0;
-    // メニューバーを除いた表示領域の大きさ取得
-    _visible_screen_rect = [[NSScreen mainScreen] visibleFrame];
-    _text_array = [NSMutableArray array];
     // 表示領域全体の大きさを取得
-    NSRect screenFrame = [[NSScreen mainScreen] frame];
+    NSScreen* screenFrame = [[NSScreen screens] objectAtIndex:
+                           [_window_button indexOfSelectedItem]];
+    // メニューバーを除いた表示領域の大きさ取得
+    _visible_screen_rect = [screenFrame visibleFrame];
+    _text_array = [NSMutableArray array];
     // 透明ウィンドウ作成
-    [_screen setFrame:screenFrame display:YES];
+    [_screen setFrame:[screenFrame frame] display:YES];
     [_screen setStyleMask:NSBorderlessWindowMask];
     [_screen setOpaque:NO];
     [_screen setBackgroundColor:[NSColor clearColor]];
@@ -68,11 +70,21 @@ int count;
         NSLog(@"error");
     }
 }
+-(void)changeScreen:(id)sender{
+    NSLog(@"change screen");
+    // 表示領域全体の大きさを取得
+    NSScreen* screenFrame = [[NSScreen screens] objectAtIndex:
+                           [_window_button indexOfSelectedItem]];
+    // メニューバーを除いた表示領域の大きさ取得
+    _visible_screen_rect = [screenFrame visibleFrame];
+    [_screen setFrame:[screenFrame frame] display:YES];
+}
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket{
     [webSocket send:@"クライアントが接続されました"];
 }
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error{
     NSLog(@"fail");
+    [_status_field setStringValue:@"NG"];
 }
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message{
     count++;
@@ -88,6 +100,7 @@ int count;
     [self connectServer];
 }
 - (void)connectServer{
+    [_status_field setStringValue:@"OK"];
     _web_socket = [[SRWebSocket alloc] initWithURLRequest:
                    [NSURLRequest requestWithURL:[NSURL URLWithString:[_url_field stringValue]]]];
     [_web_socket setDelegate:self];
@@ -133,21 +146,40 @@ int count;
 }
 -(IBAction)sendText:(id)sender{
     [_web_socket send:[_send_field stringValue]];
-    [_send_field setStringValue:@""];
+//    [_send_field setStringValue:@""];
 }
 // 最前面化した透明ウィンドウにテキストを流し込む
 - (void)createText:(NSString*)str{
     // 適当な高さを設定
-    double origin_y = (_visible_screen_rect.size.height - 20) * rand() / RAND_MAX;
-    StreamText *textField;
-    // 適当な大きさで初期化
-    textField = [[[StreamText alloc] autorelease]
-                 initWithFrame:NSMakeRect(_visible_screen_rect.size.width, origin_y, 10, 20)];
-    [_screen_view addSubview:textField];
-    // アニメーション速度を設定
-    [textField setDuration:[_duration_field floatValue]];
-    // アニメーションスタート
-    [textField showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
+    double origin_y = ((_visible_screen_rect.size.height - 20
+                        - _mbottom_field.integerValue - _mtop_field.integerValue) * rand() / RAND_MAX
+                        + _mbottom_field.integerValue);
+//    NSTextField版
+    {
+        StreamText *textField;
+        // 適当な大きさで初期化
+        textField = [[[StreamText alloc] autorelease]
+                     initWithFrame:NSMakeRect(_visible_screen_rect.size.width, origin_y, 10, 20)];
+        [_screen_view addSubview:textField];
+        // アニメーション速度を設定
+        [textField setDuration:[_duration_field floatValue]];
+        // アニメーションスタート
+//        [textField showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
+        [textField showText:[str stringByTrimmingCharactersInSet:
+                             [NSCharacterSet characterSetWithCharactersInString:@"\""]]];
+    }
+    
+//    　NSView版
+//    {
+//        StreamView* sv = [[[StreamView alloc] autorelease]
+//                          initWithFrame:NSMakeRect(_visible_screen_rect.size.width, origin_y + 100, 10, 20)];
+//        [_screen_view addSubview:sv];
+//        // アニメーション速度を設定
+//        [sv setDuration:[_duration_field floatValue]];
+//        // アニメーションスタート
+//        [sv showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
+//    }
+
 }
 //ログ表示領域に書き出し
 -(void)setLog:(NSString*)str{

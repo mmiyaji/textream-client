@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B123408117AAB9FC0064A633 /* textream.icns in Resources */ = {isa = PBXBuildFile; fileRef = B123408017AAB9FC0064A633 /* textream.icns */; };
+		B143490F17A3AFD300EC3438 /* StreamView.m in Sources */ = {isa = PBXBuildFile; fileRef = B143490E17A3AFD300EC3438 /* StreamView.m */; };
 		B17716C417959FB500176B57 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B17716C317959FB500176B57 /* Cocoa.framework */; };
 		B17716CE17959FB500176B57 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B17716CC17959FB500176B57 /* InfoPlist.strings */; };
 		B17716D017959FB500176B57 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B17716CF17959FB500176B57 /* main.m */; };
@@ -70,6 +72,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B123408017AAB9FC0064A633 /* textream.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = textream.icns; path = ../textream.icns; sourceTree = "<group>"; };
+		B143490D17A3AFD300EC3438 /* StreamView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamView.h; sourceTree = "<group>"; };
+		B143490E17A3AFD300EC3438 /* StreamView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StreamView.m; sourceTree = "<group>"; };
 		B17716C017959FB500176B57 /* textream-client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "textream-client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B17716C317959FB500176B57 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		B17716C617959FB500176B57 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -145,7 +150,10 @@
 				B17716D617959FB500176B57 /* AppDelegate.m */,
 				B1A3EC38179DF4760076624A /* StreamText.h */,
 				B1A3EC39179DF4760076624A /* StreamText.m */,
+				B143490D17A3AFD300EC3438 /* StreamView.h */,
+				B143490E17A3AFD300EC3438 /* StreamView.m */,
 				B17716D817959FB600176B57 /* MainMenu.xib */,
+				B123408017AAB9FC0064A633 /* textream.icns */,
 				B17716CA17959FB500176B57 /* Supporting Files */,
 			);
 			path = "textream-client";
@@ -267,6 +275,7 @@
 				B17716CE17959FB500176B57 /* InfoPlist.strings in Resources */,
 				B17716D417959FB500176B57 /* Credits.rtf in Resources */,
 				B17716DA17959FB600176B57 /* MainMenu.xib in Resources */,
+				B123408117AAB9FC0064A633 /* textream.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,6 +289,7 @@
 				B17716D017959FB500176B57 /* main.m in Sources */,
 				B17716D717959FB500176B57 /* AppDelegate.m in Sources */,
 				B1A3EC3A179DF4760076624A /* StreamText.m in Sources */,
+				B143490F17A3AFD300EC3438 /* StreamView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

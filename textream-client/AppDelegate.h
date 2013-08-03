@@ -21,6 +21,14 @@
         NSTextField*    _send_field;
     IBOutlet
         NSTextField*    _duration_field;
+    IBOutlet
+        NSTextField*    _status_field;
+    IBOutlet
+        NSTextField*    _mtop_field;
+    IBOutlet
+        NSTextField*    _mbottom_field;
+    IBOutlet
+        NSPopUpButton*  _window_button;
     NSStatusBar*        _status_bar;     // 上のメニューバーに表示する。常駐型なのでアプリケーション終了はここらか
     NSStatusItem*       _status_item;       // menu bar item
     SRWebSocket*        _web_socket;
@@ -29,6 +37,7 @@
 }
 -(IBAction)openAboutPanel:      (id)sender;
 -(IBAction)openPereferecesWindow:(id)sender;
+-(IBAction)changeScreen:        (id)sender;
 -(IBAction)sendText:            (id)sender;
 -(IBAction)reloadServer:        (id)sender;
 -(IBAction)hideScreen:          (id)sender;
