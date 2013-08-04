@@ -24,7 +24,7 @@
         [self setSelectable:NO];
         [self setFont:[NSFont boldSystemFontOfSize:46.0]];
         [self setTextColor:[NSColor blackColor]];
-        NSShadow* shadow = [[NSShadow alloc] init];
+        NSShadow* shadow = [[[NSShadow alloc] init] autorelease];
         shadow.shadowBlurRadius = 3;
         shadow.shadowOffset = NSMakeSize(2, -2);
         shadow.shadowColor = [NSColor blackColor];

@@ -71,13 +71,14 @@ int count;
     }
 }
 -(void)changeScreen:(id)sender{
-    NSLog(@"change screen");
+    NSLog(@"change screen %ld", [_window_button indexOfSelectedItem]);
     // 表示領域全体の大きさを取得
     NSScreen* screenFrame = [[NSScreen screens] objectAtIndex:
                            [_window_button indexOfSelectedItem]];
     // メニューバーを除いた表示領域の大きさ取得
     _visible_screen_rect = [screenFrame visibleFrame];
     [_screen setFrame:[screenFrame frame] display:YES];
+    [_web_socket send:@"表示スクリーンを変更しました"];
 }
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket{
     [webSocket send:@"クライアントが接続されました"];
@@ -171,7 +172,7 @@ int count;
     
 //    　NSView版
 //    {
-//        StreamView* sv = [[[StreamView alloc] autorelease]
+//        StreamView* sv = [[StreamView alloc]
 //                          initWithFrame:NSMakeRect(_visible_screen_rect.size.width, origin_y + 100, 10, 20)];
 //        [_screen_view addSubview:sv];
 //        // アニメーション速度を設定
