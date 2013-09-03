@@ -10,6 +10,8 @@
 #import "StreamText.h"
 #import "StreamView.h"
 #define HEARTBEAT_TIME 10.0f
+#define ARC4RANDOM_MAX      0x100000000
+
 // ユーザ変数として保存するメソッド。型によって使い分け
 @implementation NSUserDefaults (Preferences)
 -(void)setBoolIfNeeded:(BOOL)value forKey:(NSString*)key
@@ -34,6 +36,11 @@ bool isAlive;
     [_web_socket release];
     [super dealloc];
 }
+float randFloat(float a, float b)
+{
+    return ((b-a)*((float)arc4random()/ARC4RANDOM_MAX))+a;
+}
+
 // ユーザ変数の初期値設定。値に何も設定されていない場合のみ反映。
 -(void)initUserDefaults{
     id defaults = [NSUserDefaults standardUserDefaults];
@@ -195,7 +202,12 @@ bool isAlive;
                      initWithFrame:NSMakeRect(_visible_screen_rect.size.width, origin_y, 10, 20)];
         [_screen_view addSubview:textField];
         // アニメーション速度を設定
-        [textField setDuration:[_duration_field floatValue]];
+        if([_random_button state]){
+            [textField setDuration:[_duration_field floatValue]*randFloat(
+                                                                          [_random_min_field floatValue],[_random_max_field floatValue])];
+        }else{
+            [textField setDuration:[_duration_field floatValue]];
+        }
         // アニメーションスタート
 //        [textField showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
         [textField showText:[str stringByTrimmingCharactersInSet:
