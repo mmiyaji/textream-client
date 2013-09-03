@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "StreamText.h"
 #import "StreamView.h"
+#define HEARTBEAT_TIME 10.0f
 // ユーザ変数として保存するメソッド。型によって使い分け
 @implementation NSUserDefaults (Preferences)
 -(void)setBoolIfNeeded:(BOOL)value forKey:(NSString*)key
@@ -27,6 +28,7 @@
 @implementation AppDelegate
 @synthesize _pref_window;
 int count;
+bool isAlive;
 - (void)dealloc
 {
     [_web_socket release];
@@ -44,6 +46,7 @@ int count;
     // ユーザ変数初期化
     [self initUserDefaults];
     count = 0;
+    isAlive = true;
     // 表示領域全体の大きさを取得
     NSScreen* screenFrame = [[NSScreen screens] objectAtIndex:
                            [_window_button indexOfSelectedItem]];
@@ -69,6 +72,27 @@ int count;
     @catch (NSException *exception) {
         NSLog(@"error");
     }
+    [NSTimer scheduledTimerWithTimeInterval:HEARTBEAT_TIME //タイマーを発生させる間隔
+                                     target:self //タイマー発生時に呼び出すメソッドがあるターゲット
+                                   selector:@selector(heartbeat:) //タイマー発生時に呼び出すメソッド
+                                   userInfo:nil //selectorに渡す情報(NSDictionary)
+                                    repeats:YES //リピート
+     ];
+}
+
+-(void)heartbeat:(NSTimer*)timer
+{
+    if(isAlive){
+        NSLog(@"heartbeat");
+        isAlive = false;
+        [_web_socket send:@"heart"];
+    }
+    else{
+        NSLog(@"retry connect");
+        [_web_socket close];
+//        [_web_socket dealloc];
+        [self connectServer];
+    }
 }
 -(void)changeScreen:(id)sender{
     NSLog(@"change screen %ld", [_window_button indexOfSelectedItem]);
@@ -81,17 +105,25 @@ int count;
     [_web_socket send:@"表示スクリーンを変更しました"];
 }
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket{
-    [webSocket send:@"クライアントが接続されました"];
+//    [webSocket send:@"クライアントが接続されました"];
+    NSLog(@"connected");
 }
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error{
     NSLog(@"fail");
     [_status_field setStringValue:@"NG"];
 }
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message{
-    count++;
-    NSLog(@"%@", [message description]);
-    [self createText:[message description]];
-    [self setLog:[message description]];
+    if([[message description] isEqualToString:@"beat"]){
+        NSLog(@"heart");
+        isAlive = true;
+    }
+    else{
+        count++;
+        isAlive = true;
+        NSLog(@"%@", [message description]);
+        [self createText:[message description]];
+        [self setLog:[message description]];
+    }
 }
 //再接続
 - (void)reloadServer:(id)sender{
