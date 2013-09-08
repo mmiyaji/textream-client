@@ -111,7 +111,7 @@ static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
     // メニューバーを除いた表示領域の大きさ取得
     _visible_screen_rect = [screenFrame visibleFrame];
     [_screen setFrame:[screenFrame frame] display:YES];
-    [_web_socket send:@"表示スクリーンを変更しました"];
+//    [_web_socket send:@"表示スクリーンを変更しました"];
 }
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket{
 //    [webSocket send:@"クライアントが接続されました"];
@@ -193,9 +193,16 @@ static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
 // 最前面化した透明ウィンドウにテキストを流し込む
 - (void)createText:(NSString*)str{
     // 適当な高さを設定
-    double origin_y = ((_visible_screen_rect.size.height - 20
-                        - _mbottom_field.integerValue - _mtop_field.integerValue) * rand() / RAND_MAX
-                        + _mbottom_field.integerValue);
+//    double origin_y = ((_visible_screen_rect.size.height - _visible_screen_rect.origin.y
+//                        - _mbottom_field.integerValue - _mtop_field.integerValue) * (rand() / RAND_MAX)
+//                        + _mbottom_field.integerValue) - _visible_screen_rect.origin.y - 150;
+    double origin_y = randFloat(_mbottom_field.integerValue,
+                                _visible_screen_rect.size.height -100 - _size_field.integerValue);
+//    if(origin_y > _visible_screen_rect.size.height - 150){
+//        origin_y = _visible_screen_rect.size.height - 150;
+//    }
+//    NSLog(@"%f", _visible_screen_rect.size.height);
+//    NSLog(@"%f", origin_y);
 //    NSTextField版
 //    {
 //        StreamText *textField;
