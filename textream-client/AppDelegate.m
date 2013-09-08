@@ -228,8 +228,13 @@ static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
         }else{
             [sv setDuration:[_duration_field floatValue]];
         }
+        [sv setTextSize:_size_field.integerValue];
         // アニメーションスタート
         switch ([_color_button indexOfSelectedItem]) {
+            case 0:
+                [sv setTextColor:colorFromRGB(255, 255, 255)];
+                [sv setShadowColor:colorFromRGB(0, 0, 0)];
+                break;
             case 1:
                 [sv setTextColor:colorFromRGB(0, 0, 0)];
                 [sv setShadowColor:colorFromRGB(255, 255, 255)];
@@ -255,8 +260,8 @@ static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
                 [sv setShadowColor:colorFromRGB(255, 255, 255)];
                 break;
             default:
-                [sv setTextColor:colorFromRGB(255, 255, 255)];
-                [sv setShadowColor:colorFromRGB(0, 0, 0)];
+                [sv setTextColor:colorFromRGB(randFloat(0,255),randFloat(0,255),randFloat(0,255))];
+                [sv setShadowColor:colorFromRGB(randFloat(0,255),randFloat(0,255),randFloat(0,255))];
                 break;
         }
         [sv showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];

@@ -15,11 +15,12 @@
     NSShadow*               _shadow;
     NSColor*                _color;
     NSColor*                _scolor;
-    NSSize                  _text_size;
+    NSInteger               _text_size;
     CGFloat                 _duration;
 }
 -(void)setDuration:(CGFloat)d;
 -(void)showText:(NSString*)str;
 -(void)setTextColor:(NSColor*)c;
 -(void)setShadowColor:(NSColor*)c;
+-(void)setTextSize:(NSInteger)s;
 @end

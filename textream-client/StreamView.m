@@ -13,6 +13,7 @@
 {
     self = [super initWithFrame:frame];
     _message = @"textream";
+    _text_size = 44;
 //    [_message retain];
     return self;
 }
@@ -45,6 +46,10 @@
 {
     _duration = d;
 }
+- (void)setTextSize:(NSInteger)s
+{
+    _text_size = s;
+}
 - (void)showText:(NSString*)str
 {
 //    [_string_attributes release];
@@ -52,11 +57,11 @@
     _border_attributes = [[NSMutableDictionary dictionary] retain];
     [_string_attributes setObject:_color
                            forKey:NSForegroundColorAttributeName];
-    [_string_attributes setObject:[NSFont boldSystemFontOfSize:44.0]
+    [_string_attributes setObject:[NSFont boldSystemFontOfSize:_text_size]
                            forKey: NSFontAttributeName];
-    [_border_attributes setObject:[NSFont boldSystemFontOfSize:44.0]
+    [_border_attributes setObject:[NSFont boldSystemFontOfSize:_text_size]
                            forKey: NSFontAttributeName];
-    [_border_attributes setObject:[[NSNumber alloc]initWithFloat:10.0]
+    [_border_attributes setObject:[[NSNumber alloc]initWithFloat:_text_size/4]
                            forKey:NSStrokeWidthAttributeName];
     [_border_attributes setObject:_scolor forKey: NSStrokeColorAttributeName];
     _message = str;
