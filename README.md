@@ -1,6 +1,9 @@
 textream-client
 ===============
 
+Download app
+-------
+[textream ver1.0](http://mmiyajix.appspot.com/download/aghtbWl5YWppeHIQCxIIUG9zdERhdGEYwaMJDA/textream.app.zip)
 
 Install
 -------
