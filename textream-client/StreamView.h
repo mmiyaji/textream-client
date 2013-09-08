@@ -11,11 +11,15 @@
 @interface StreamView : NSView{
     NSString*               _message;
     NSMutableDictionary*    _string_attributes;
+    NSMutableDictionary*    _border_attributes;
     NSShadow*               _shadow;
+    NSColor*                _color;
+    NSColor*                _scolor;
     NSSize                  _text_size;
     CGFloat                 _duration;
 }
 -(void)setDuration:(CGFloat)d;
 -(void)showText:(NSString*)str;
-
+-(void)setTextColor:(NSColor*)c;
+-(void)setShadowColor:(NSColor*)c;
 @end

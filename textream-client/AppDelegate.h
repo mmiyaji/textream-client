@@ -28,6 +28,8 @@
     IBOutlet
         NSTextField*    _mbottom_field;
     IBOutlet
+        NSTextField*    _size_field;
+    IBOutlet
         NSPopUpButton*  _window_button;
     IBOutlet
         NSButton*       _random_button;
@@ -35,6 +37,8 @@
         NSTextField*    _random_min_field;
     IBOutlet
         NSTextField*    _random_max_field;
+    IBOutlet
+        NSPopUpButton*  _color_button;
     NSStatusBar*        _status_bar;     // 上のメニューバーに表示する。常駐型なのでアプリケーション終了はここらか
     NSStatusItem*       _status_item;       // menu bar item
     SRWebSocket*        _web_socket;

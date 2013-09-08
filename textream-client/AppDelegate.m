@@ -11,7 +11,6 @@
 #import "StreamView.h"
 #define HEARTBEAT_TIME 10.0f
 #define ARC4RANDOM_MAX      0x100000000
-
 // ユーザ変数として保存するメソッド。型によって使い分け
 @implementation NSUserDefaults (Preferences)
 -(void)setBoolIfNeeded:(BOOL)value forKey:(NSString*)key
@@ -40,7 +39,10 @@ float randFloat(float a, float b)
 {
     return ((b-a)*((float)arc4random()/ARC4RANDOM_MAX))+a;
 }
-
+static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
+{
+    return [NSColor colorWithCalibratedRed:(r/255.0f) green:(g/255.0f) blue:(b/255.0f) alpha:1.0];
+}
 // ユーザ変数の初期値設定。値に何も設定されていない場合のみ反映。
 -(void)initUserDefaults{
     id defaults = [NSUserDefaults standardUserDefaults];
@@ -195,35 +197,70 @@ float randFloat(float a, float b)
                         - _mbottom_field.integerValue - _mtop_field.integerValue) * rand() / RAND_MAX
                         + _mbottom_field.integerValue);
 //    NSTextField版
-    {
-        StreamText *textField;
-        // 適当な大きさで初期化
-        textField = [[[StreamText alloc] autorelease]
-                     initWithFrame:NSMakeRect(_visible_screen_rect.size.width, origin_y, 10, 20)];
-        [_screen_view addSubview:textField];
-        // アニメーション速度を設定
-        if([_random_button state]){
-            [textField setDuration:[_duration_field floatValue]*randFloat(
-                                                                          [_random_min_field floatValue],[_random_max_field floatValue])];
-        }else{
-            [textField setDuration:[_duration_field floatValue]];
-        }
-        // アニメーションスタート
-//        [textField showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
-        [textField showText:[str stringByTrimmingCharactersInSet:
-                             [NSCharacterSet characterSetWithCharactersInString:@"\""]]];
-    }
+//    {
+//        StreamText *textField;
+//        // 適当な大きさで初期化
+//        textField = [[[StreamText alloc] autorelease]
+//                     initWithFrame:NSMakeRect(_visible_screen_rect.size.width, origin_y, 10, 20)];
+//        [_screen_view addSubview:textField];
+//        // アニメーション速度を設定
+//        if([_random_button state]){
+//            [textField setDuration:[_duration_field floatValue]*randFloat(
+//                                                                          [_random_min_field floatValue],[_random_max_field floatValue])];
+//        }else{
+//            [textField setDuration:[_duration_field floatValue]];
+//        }
+//        // アニメーションスタート
+////        [textField showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
+//        [textField showText:[str stringByTrimmingCharactersInSet:
+//                             [NSCharacterSet characterSetWithCharactersInString:@"\""]]];
+//    }
     
 //    　NSView版
-//    {
-//        StreamView* sv = [[StreamView alloc]
-//                          initWithFrame:NSMakeRect(_visible_screen_rect.size.width, origin_y + 100, 10, 20)];
-//        [_screen_view addSubview:sv];
-//        // アニメーション速度を設定
-//        [sv setDuration:[_duration_field floatValue]];
-//        // アニメーションスタート
-//        [sv showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
-//    }
+    {
+        StreamView* sv = [[StreamView alloc]
+                          initWithFrame:NSMakeRect(_visible_screen_rect.size.width, origin_y + 100, 10, 20)];
+        [_screen_view addSubview:sv];
+        // アニメーション速度を設定
+        if([_random_button state]){
+            [sv setDuration:[_duration_field floatValue]*randFloat(
+                                                                          [_random_min_field floatValue],[_random_max_field floatValue])];
+        }else{
+            [sv setDuration:[_duration_field floatValue]];
+        }
+        // アニメーションスタート
+        switch ([_color_button indexOfSelectedItem]) {
+            case 1:
+                [sv setTextColor:colorFromRGB(0, 0, 0)];
+                [sv setShadowColor:colorFromRGB(255, 255, 255)];
+                break;
+            case 2:
+                [sv setTextColor:colorFromRGB(255, 0, 0)];
+                [sv setShadowColor:colorFromRGB(255, 255, 255)];
+                break;
+            case 3:
+                [sv setTextColor:colorFromRGB(0, 255, 0)];
+                [sv setShadowColor:colorFromRGB(255, 255, 255)];
+                break;
+            case 4:
+                [sv setTextColor:colorFromRGB(0, 0, 255)];
+                [sv setShadowColor:colorFromRGB(255, 255, 255)];
+                break;
+            case 5:
+                [sv setTextColor:colorFromRGB(50, 50, 50)];
+                [sv setShadowColor:colorFromRGB(255, 255, 255)];
+                break;
+            case 6:
+                [sv setTextColor:colorFromRGB(200, 80, 255)];
+                [sv setShadowColor:colorFromRGB(255, 255, 255)];
+                break;
+            default:
+                [sv setTextColor:colorFromRGB(255, 255, 255)];
+                [sv setShadowColor:colorFromRGB(0, 0, 0)];
+                break;
+        }
+        [sv showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
+    }
 
 }
 //ログ表示領域に書き出し
