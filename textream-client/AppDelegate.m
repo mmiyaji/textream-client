@@ -196,13 +196,11 @@ static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
 //    double origin_y = ((_visible_screen_rect.size.height - _visible_screen_rect.origin.y
 //                        - _mbottom_field.integerValue - _mtop_field.integerValue) * (rand() / RAND_MAX)
 //                        + _mbottom_field.integerValue) - _visible_screen_rect.origin.y - 150;
-    double origin_y = randFloat(_mbottom_field.integerValue,
-                                _visible_screen_rect.size.height -100 - _size_field.integerValue);
+    double origin_y = randFloat(_mbottom_field.integerValue + _visible_screen_rect.origin.y,
+                                _visible_screen_rect.size.height - _size_field.integerValue);
 //    if(origin_y > _visible_screen_rect.size.height - 150){
 //        origin_y = _visible_screen_rect.size.height - 150;
 //    }
-//    NSLog(@"%f", _visible_screen_rect.size.height);
-//    NSLog(@"%f", origin_y);
 //    NSTextField版
 //    {
 //        StreamText *textField;
@@ -226,7 +224,7 @@ static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
 //    　NSView版
     {
         StreamView* sv = [[StreamView alloc]
-                          initWithFrame:NSMakeRect(_visible_screen_rect.size.width, origin_y + 100, 10, 20)];
+                          initWithFrame:NSMakeRect(_visible_screen_rect.size.width, origin_y, 10, 20)];
         [_screen_view addSubview:sv];
         // アニメーション速度を設定
         if([_random_button state]){
@@ -271,7 +269,8 @@ static NSColor *colorFromRGB(unsigned char r, unsigned char g, unsigned char b)
                 [sv setShadowColor:colorFromRGB(randFloat(0,255),randFloat(0,255),randFloat(0,255))];
                 break;
         }
-        [sv showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
+//        [sv showText:[str stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
+        [sv showText:str];
     }
 
 }
