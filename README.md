@@ -1,10 +1,10 @@
 textream-client
 ===============
+![textream0](http://m-server.appspot.com/download/Screen%20Shot%202013-09-28%20at%209.47.50%20PM.png?fid=aghtLXNlcnZlcnIQCxIIUG9zdERhdGEY4egmDA)
 ニコニコ動画みたいにユーザのコメントをデスクトップ上に流すソフトです。（Mac専用）
 サーバとはWebsocketで接続しており、ブラウザから入力したコメントをリアルタイムで表示することができます。
 知人の結婚式二次会用に作成しました。
 動画とか流している上で参加者からのコメントを流したりして盛り上げようという寸法ですね。
-
 
 Download app
 -------
